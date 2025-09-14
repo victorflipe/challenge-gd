@@ -1,0 +1,32 @@
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: techblog_db
+    env_file:
+      - backend/.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: techblog_api
+    env_file:
+      - backend/.env
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "python -m app.infrastructure.init_db && alembic upgrade head || true && uvicorn app.main:app
+      --host 0.0.0.0 --port 8000 --reload --log-level debug"
+    volumes:
+      - ./backend:/backend
+
+volumes:
+  db_data:
+    driver: local
