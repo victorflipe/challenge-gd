@@ -17,10 +17,12 @@ Projeto de exemplo utilizando **FastAPI**, **Postgres** e **Vite (React)**.
 ```bash
 git clone <url-do-repo>
 cd <nome-do-repo>
+```
 
 2. Execute os containers
 ```bash
 docker-compose up --build
+```
 
 Isso irá subir:
 - banco de dados na porta 5432
@@ -30,16 +32,19 @@ Isso irá subir:
 3. Acesse o frontend pelo endereço:
 ```bash
 http://localhost:5173
+```
 
 4. Acesse a documentação da API em:
 ```bash
 http://localhost:8000/docs
+```
 
 Comandos úteis
 
 - Para todos os containers
 ```bash
 docker-compose down
+```
 
 ## Estrutura do Projeto
 ```bash
@@ -48,4 +53,4 @@ docker-compose down
 ├── frontend/      # Código do frontend Vite/React
 ├── docker-compose.yml
 └── README.md
-
+```
