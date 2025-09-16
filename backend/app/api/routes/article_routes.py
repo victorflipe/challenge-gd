@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi import APIRouter, HTTPException, Depends, status, Query
 from fastapi.encoders import jsonable_encoder
 from app.domain.article import Article
 from app.application.article_service import ArticleService
@@ -30,8 +30,6 @@ def create_article(article:ArticleCreate, common: CommonDeps = Depends(get_commo
         for tag in article.tags:
             list_tags.append(service.create_tag(tag))
         
-        print(f'Lista de tags ==>: {list_tags}')
-        
         article_obj = Article(
             title = article.title,
             content = article.content,
@@ -50,7 +48,7 @@ def create_article(article:ArticleCreate, common: CommonDeps = Depends(get_commo
         return response_success(
             data = jsonable_encoder(article_created),
             status_code = status.HTTP_201_CREATED,
-            message = "Article created success!"
+            message = "Artigo criado com sucesso!"
         )
         
     except HTTPException as error:
@@ -68,7 +66,6 @@ def create_comment(article_id:int, comment:CommentCreate, common: CommonDeps = D
     current_user = common.current_user
     
     try:
-        print(f'O que chegou: {article_id}')
         serviceComment = CommentService(db)
         
         comment_created = serviceComment.create_comment(
@@ -79,7 +76,7 @@ def create_comment(article_id:int, comment:CommentCreate, common: CommonDeps = D
         
         return response_success( 
             data = jsonable_encoder(comment_created),
-            message = "Comment created sucess!"
+            message = "Comentário criado com sucesso!"
         )
     
     except HTTPException as error:
@@ -96,7 +93,6 @@ def get_comments(article_id:int, common: CommonDeps = Depends(get_common_deps)):
     db = common.db
     
     print("Apenas mostra os comentários...")
-    print("Article: ", article_id)
     article_service = ArticleService(db=db)
     article = article_service.check_article(article_id=article_id)
     
@@ -118,17 +114,24 @@ def get_comments(article_id:int, common: CommonDeps = Depends(get_common_deps)):
     )
     
 @router.get("/")
-def get_all_articles(common: CommonDeps = Depends(get_common_deps)):
+def get_all_articles(common: CommonDeps = Depends(get_common_deps), skip: int = Query(0, ge=0), limit: int = Query(10, ge=1, le=100)):
     
     """Função que retorna todos os Articles cadastrados"""
     
     db = common.db
     
     service = ArticleService(db=db)
-    result = service.get_all_articles()
+    result = service.get_all_articles(skip, limit)
+    total = service.count_articles()
     
     return response_success(
-        data = [jsonable_encoder(article) for article in result]
+        data = [jsonable_encoder(article) for article in result],
+        pagination = {
+            "total": total,
+            "skip": skip,
+            "limit": limit,
+            "pages": (total // limit) + (1 if total % limit else 0)
+        }
     )
     
 @router.put("/{article_id}", response_model = ArticleRead)
@@ -138,7 +141,6 @@ def edit_article(article_id:int, article:ArticleCreate, common: CommonDeps = Dep
     
     db = common.db
     current_user = common.current_user
-    print("Current user ", current_user)
     
     try:
         
@@ -151,17 +153,15 @@ def edit_article(article_id:int, article:ArticleCreate, common: CommonDeps = Dep
             tags = article.tags
         )
         
-        print(f'Objeto article: {article_obj}')
         article_service = ArticleService(db=db)
         article_updated = article_service.update_article(article_data = article_obj)
         
         return response_success(
-            message = "Article atualizado com sucesso!",
+            message = "Artigo atualizado com sucesso!",
             data=jsonable_encoder(article_updated)
         )
         
     except ValueError as error:
-        print(f'É aqui...............................')
         return response_error(
             message=error.detail,
             status_code= error.status_code

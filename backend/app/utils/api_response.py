@@ -5,20 +5,18 @@ from typing import Any, Optional
 def response_success(
     data: Any = None,
     message: str = None,
-    status_code: int = status.HTTP_200_OK
+    status_code: int = status.HTTP_200_OK,
+    pagination: Optional[dict] = None
 ) -> JSONResponse:
     """Retorna mensagem de sucesso"""
     
     content = {
-        "response": {
-            "data": data
-        }
+        "data": data,
+        "message": message
     }
-    
-    if not message is None:
-        content["response"]["message"] = message
-    
-    print(f"Content criado: {content}")
+
+    if pagination:
+        content["pagination"] = pagination
     
     return JSONResponse(
         status_code=status_code,
@@ -33,10 +31,8 @@ def response_error(
     """Retorna mensagem de erro"""
     
     content = {
-        "response": {
-            "message": message,
-            "details": details
-        }
+        "message": message,
+        "details": details
     }
     
     return JSONResponse(

@@ -16,6 +16,10 @@ class UserRead(BaseSchema):
     name: str
     email: EmailStr
     created_at: datetime
+
+class UserReadArticle(BaseSchema):
+    id: int
+    name: str
     
 class UserLogin(BaseSchema):
     email: EmailStr

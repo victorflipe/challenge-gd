@@ -1,3 +1,4 @@
+from sqlalchemy import desc
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from app.domain.article import Article
@@ -91,8 +92,11 @@ class ArticleRepository:
         
         return article.tags
     
-    def get_all_articles(self) -> list[Article]:
-        return self.db.query(ArticleModel).all()
+    def get_all_articles(self, skip:int, limit:int) -> list[ArticleModel]:
+        return self.db.query(ArticleModel).order_by(desc(ArticleModel.created_at)).offset(skip).limit(limit).all()
+    
+    def count_articles(self):
+        return self.db.query(ArticleModel).count()
     
     def get_all_tags_to_article(self, article_id:int) -> Optional[list[TagModel]]:
         article_obj = self.db.query(ArticleModel).filter_by(id=article_id).first()
@@ -102,5 +106,5 @@ class ArticleRepository:
         return self.db.query(ArticleModel).filter_by(id=article_id).first()
     
     def get_all_comments(self, article_id:int) -> list[CommentModel]:
-        return self.db.query(CommentModel).filter_by(article_id=article_id).all()
+        return self.db.query(CommentModel).filter_by(article_id=article_id).order_by(desc(CommentModel.created_at)).all()
     

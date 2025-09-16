@@ -23,5 +23,5 @@ def get_all_tags(db:Session = Depends(open_session)):
     
     except HTTPException as error:
         return response_error(
-            data=str(error)
+            message="Erro ao buscar Tags"
         )

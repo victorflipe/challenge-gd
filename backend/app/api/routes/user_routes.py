@@ -1,10 +1,11 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Header
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 from app.application.user_service import UserService
 from app.schemas.user_schema import UserCreate, UserRead, UserLogin
 from app.infrastructure.database import open_session
 from app.utils.api_response import response_success, response_error
-# from app.api.auth import oauth2_scheme
+from app.api.auth import get_current_user
 from app.api.dependency import CommonDeps, get_common_deps
 from app.infrastructure.exceptions import UserAlreadyExistsError
 
@@ -37,14 +38,14 @@ def create_user(user:UserCreate, db:Session = Depends(open_session)):
     #         message = error.detail,
     #         status_code = error.status_code
     #     )
-        
-@router.post("/login")
-def user_login(user_credentials: UserLogin, db:Session = Depends(open_session)):
-    
-    user_service = UserService(db)
-    token = user_service.login(user_credentials)
+
+
+@router.get("/getuser")
+def get_user(user:UserRead = Depends(get_current_user)):
+   
+    print("Common user: ", user)
     
     return response_success(
-        data = {"access_token": token, "token_type": "bearer"},
-        message = "Usuário logado com sucesso!"
+        data = jsonable_encoder(user),
     )
+    # user_service = UserService(db)

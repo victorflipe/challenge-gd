@@ -34,10 +34,10 @@ class UserRepository:
             raise DataBaseError(user_obj.email)
             
     def get_by_email(self, user_email:str) -> User:
-        return self.db.query(UserModel).filter(UserModel.email == user_email).first()
+        return self.db.query(UserModel).filter_by(email=user_email).first()
     
     def get_by_id(self, user_id:int) -> User:
-        return self.db.query(UserModel).filter(UserModel.id == user_id).first()
+        return self.db.query(UserModel).filter_by(id=user_id).first()
    
     def check_user(self, user_id:int) -> UserModel:
-        return self.db.query(UserModel).filter(UserModel.id == user_id).first()
+        return self.db.query(UserModel).filter_by(id=user_id).first()

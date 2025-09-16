@@ -1,3 +1,4 @@
+from fastapi import status, HTTPException
 from sqlalchemy.orm import Session
 from app.infrastructure.repositories.user_repository import UserRepository
 from app.domain.user import User
@@ -38,10 +39,10 @@ class UserService:
         user = self.repository.get_by_email(user_credentials.email)
         
         if not user:
-            raise ValueError("E-mail ou senha inválidos")
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="E-mail ou senha inválidos")
         
         if not pwd_context.verify(user_credentials.password, user.password):
-            raise ValueError("E-mail ou senha inválidos")
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Credenciais inválidas")
         
         return create_access_token(data={"sub": str(user.id)})
 

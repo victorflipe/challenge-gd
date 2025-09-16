@@ -149,17 +149,22 @@ class ArticleService:
     
         return self.repository.add_tags_to_article(article_id, list_tags)
     
-    def get_all_articles(self) -> list[ArticleRead]:
+    def count_articles(self):
+        return self.repository.count_articles()
+    
+    def get_all_articles(self, skip, limit) -> list[ArticleRead]:
     
         """Retorna uma lista com todos os registros de Article"""
     
-        all_articles = self.repository.get_all_articles()
+        all_articles = self.repository.get_all_articles(skip, limit)
         
         articles_treated = []
         for article in all_articles:
             
+            # tags_objects = [TagRead.model_validate(tag) for tag in article.tags]
+            
             articles_treated.append(
-                ArticleRead.model_validate(Article.from_orm(article))
+                ArticleRead.model_validate(article)
             )
         
         return articles_treated

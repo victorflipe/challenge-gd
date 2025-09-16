@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Optional, List
+from .tag import Tag
 
 class Article:
     def __init__(
@@ -9,7 +10,7 @@ class Article:
         image:str,
         author_id:int,
         id:Optional[int]=None,
-        tags:Optional[List[str]]=None,
+        tags:Optional[List[Tag]]=None,
         created_at:Optional[datetime]=None,
         updated_at:Optional[datetime]=None
     ):
