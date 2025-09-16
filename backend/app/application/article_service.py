@@ -67,7 +67,6 @@ class ArticleService:
         tags_updated = self.repository.update_tags_to_article(article_id, tags_to_remove, tags_to_add_treated)
         return tags_updated
 
-    
     def update_article(self, article_data: Article) -> ArticleRead:
 
         """Atualiza o artigo"""

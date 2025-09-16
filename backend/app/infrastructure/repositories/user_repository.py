@@ -41,3 +41,6 @@ class UserRepository:
    
     def check_user(self, user_id:int) -> UserModel:
         return self.db.query(UserModel).filter_by(id=user_id).first()
+
+    def get_by_name(self, user_name:str) -> UserModel:
+        return self.db.query(UserModel).filter_by(name=user_name).first()

@@ -52,7 +52,6 @@ class ArticleRepository:
     
     def save_data(self, article:Article) -> Article:
         self.db.commit()
-        # self.db.flush()
         return article
     
     def add_tags_to_article(self, article_id: int, list_tags: list[TagModel]) -> list[TagModel]:

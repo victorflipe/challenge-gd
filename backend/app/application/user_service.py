@@ -5,6 +5,7 @@ from app.domain.user import User
 from app.schemas.user_schema import UserCreate, UserRead, UserLogin
 from app.infrastructure.exceptions import UserAlreadyExistsError, DataBaseError
 from app.api.auth import pwd_context, create_access_token, get_password_hash
+from typing import Optional
 
 class UserService:
     
@@ -48,5 +49,11 @@ class UserService:
 
     def check_user(self, user_id:int) -> UserRead:
         return UserRead.model_validate(self.repository.check_user(user_id))
-    
+
+    def get_by_name(self, user_name:str) -> Optional[UserRead]:
+        user = self.repository.get_by_name(user_name)
+        if not user: 
+            return None
+        return UserRead.model_validate(user)
         
+    

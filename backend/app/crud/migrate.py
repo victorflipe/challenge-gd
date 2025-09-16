@@ -1,16 +1,11 @@
 import json
 from pathlib import Path
 from app.infrastructure.database import localSession
-from app.infrastructure.models.user_model import UserModel
-from app.infrastructure.models.comment_model import CommentModel
-from app.infrastructure.models.article_model import ArticleModel
-from app.infrastructure.models.tag_model import TagModel
-
-# Classe fake para simular o current_user
-class FakeCommon:
-    def __init__(self, db, current_user):
-        self.db = db
-        self.current_user = current_user
+from app.application.user_service import UserService
+from app.application.article_service import ArticleService
+from app.application.tag_service import TagService
+from app.schemas.user_schema import UserCreate
+from app.schemas.article_schema import ArticleCreate
 
 def migrate_articles():
     json_path = Path(__file__).parent.parent / "data" / "articles.json"
@@ -21,44 +16,51 @@ def migrate_articles():
     db = localSession()
 
     try:
+        user_service = UserService(db)
+        article_service = ArticleService(db)
+        tag_service = TagService(db)
+
         for item in data:
             
-            user = db.query(UserModel).filter_by(name=item["author"]).first()
+            author_name = item["author"]
+            user = user_service.get_by_name(author_name)
             
             if not user:
-                print(f"Criando usuário: {item['author']}")
-                user = UserModel(
-                    name=item["author"],
-                    email=f'{item["author"]}@email.com',
-                    password="teste"  # lembre-se de hashear em produção
+                name_parts = author_name.strip().split(" ")
+                first_name = name_parts[0].lower()
+                second_name = name_parts[1].lower() if len(name_parts) > 1 else ""
+                email = f"{first_name}{second_name}@teste.com"
+
+                user = user_service.create_user(
+                    UserCreate(
+                        name=author_name,
+                        email=email,
+                        password="teste"
+                    )
                 )
-                db.add(user)
-                db.commit()
-                db.refresh(user)
 
-            article = ArticleModel(
-                title=item["title"],
-                content=item["content"],
-                image=item.get("image", None),
-                author_id=user.id
+            article = article_service.create_article(
+                ArticleCreate(
+                    title=item["title"],
+                    content=item["content"],
+                    image=item.get("image"),
+                    author_id=user.id
+                )
             )
-            db.add(article)
-            db.commit()
-            db.refresh(article)
 
+            list_tags = []
             for key in ["tag1", "tag2", "tag3"]:
                 tag_name = item.get(key)
                 if tag_name:
-                    tag = db.query(TagModel).filter_by(tag=tag_name).first()
+                    tag_name_clean = tag_name.strip().lower()
+                    tag = tag_service.get_by_name(tag_name_clean)
                     if not tag:
-                        tag = TagModel(tag=tag_name)
-                        db.add(tag)
-                        db.commit()
-                        db.refresh(tag)
+                        tag = tag_service.create_tag(tag_name_clean)
+                    if tag not in list_tags:
+                        list_tags.append(tag)
 
-                    if tag not in article.tags:
-                        article.tags.append(tag)
-                        db.commit()
+            if list_tags:
+                article_service.add_tags_to_article(article.id, list_tags=list_tags)
 
         print("Migração concluída com sucesso!")
 

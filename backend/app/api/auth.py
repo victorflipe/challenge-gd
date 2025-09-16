@@ -55,10 +55,8 @@ def get_current_user(
         raise HTTPException(status_code=401, detail = "Token inválido")
 
     user = UserRepository(db).get_by_id(user_id)
-    print(f'Usuário pego agora: {user.id}')
 
     if not user:
         raise HTTPException(status_code=401, detail = "Usuário não encontrado")
 
-    print("Usuário final: ", user)
     return UserRead.from_orm(user)

@@ -12,14 +12,15 @@ class BaseSchema(BaseModel):
 class ArticleCreate(BaseSchema):
     title: str
     content: str
-    image: str | None
+    image: Optional[str]
+    author_id: Optional[int]
     tags: list[str] = []
     
 class ArticleRead(BaseSchema):
     id: int
     title: str
     content: str
-    image: str | None
+    image: Optional[str]
     author: UserReadArticle
     tags: list[TagRead] = []
     created_at: datetime
