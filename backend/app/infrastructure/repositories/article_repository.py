@@ -57,9 +57,7 @@ class ArticleRepository:
     
     def add_tags_to_article(self, article_id: int, list_tags: list[TagModel]) -> list[TagModel]:
         
-        print('Id article==============: ', article_id)
         article = self.db.query(ArticleModel).filter_by(id=article_id).first()
-        print(f'Lista das tags--> : {list_tags}')
         
         if article.tags is None:
             return []
@@ -71,8 +69,6 @@ class ArticleRepository:
         return article.tags
     
     def update_tags_to_article(self, article_id:int, list_tags_remove:Optional[list[Tag]], list_tags_add:Optional[list[Tag]]) -> list[TagModel]:
-        print(f'Remove: {list_tags_remove}')
-        print(f'Adição: {list_tags_add}')
         tags_removed = self.remove_tags_to_article(article_id, list_tags_remove)
         tags_added = self.add_tags_to_article(article_id, list_tags_add)
         return tags_removed + tags_added
