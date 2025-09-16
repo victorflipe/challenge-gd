@@ -27,6 +27,20 @@ services:
     volumes:
       - ./backend:/backend
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: techblog_frontend
+    depends_on:
+      - api
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/frontend
+    command: >
+      sh -c "npm install && npm run dev -- --host 0.0.0.0"
+
 volumes:
   db_data:
     driver: local
