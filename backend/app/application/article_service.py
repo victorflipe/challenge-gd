@@ -152,4 +152,12 @@ class ArticleService:
     def get_all_comments(self, article_id:int) -> list[CommentRead]:
         
         comments = self.repository.get_all_comments(article_id)
-        return comments
+        comments_treated = []
+        
+        for comment in comments:
+            comments_treated.append(
+                CommentRead.model_validate(comment)
+            )
+        
+        return comments_treated
+    

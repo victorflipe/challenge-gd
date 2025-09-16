@@ -10,6 +10,7 @@ class CommentCreate(BaseModel):
     
 class CommentRead(BaseModel):
     
+    id: Optional[int]
     comment: str
     parent_comment_id: Optional[int] = None
     replies: Optional[list["CommentRead"]] = []

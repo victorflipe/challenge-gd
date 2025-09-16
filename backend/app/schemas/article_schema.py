@@ -13,7 +13,7 @@ class ArticleCreate(BaseSchema):
     title: str
     content: str
     image: Optional[str]
-    author_id: Optional[int]
+    author_id: Optional[int] = None
     tags: list[str] = []
     
 class ArticleRead(BaseSchema):

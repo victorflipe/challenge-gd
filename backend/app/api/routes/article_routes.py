@@ -85,7 +85,7 @@ def create_comment(article_id:int, comment:CommentCreate, common: CommonDeps = D
             status_code = error.status_code
         )
     
-@router.get("/{article_id}/comments")
+@router.get("/{article_id}/comments", response_model = list[CommentRead])
 def get_comments(article_id:int, common: CommonDeps = Depends(get_common_deps)):
     
     """Pega todos os comentários vinculados ao artigo"""
