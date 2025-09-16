@@ -43,8 +43,6 @@ def create_user(user:UserCreate, db:Session = Depends(open_session)):
 @router.get("/getuser")
 def get_user(user:UserRead = Depends(get_current_user)):
    
-    print("Common user: ", user)
-    
     return response_success(
         data = jsonable_encoder(user),
     )

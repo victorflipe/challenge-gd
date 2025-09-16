@@ -92,11 +92,8 @@ def get_comments(article_id:int, common: CommonDeps = Depends(get_common_deps)):
     
     db = common.db
     
-    print("Apenas mostra os comentários...")
     article_service = ArticleService(db=db)
     article = article_service.check_article(article_id=article_id)
-    
-    print(f'Article selecionado: {article}')
     
     if not article:
         return response_error(
@@ -105,9 +102,6 @@ def get_comments(article_id:int, common: CommonDeps = Depends(get_common_deps)):
         )
    
     list_comments = article_service.get_all_comments(article.id) 
-    print('Lista de comentários ============', list_comments)
-    # service = CommentService(db=db)
-    # list_comments = service.get_all_comments(article)
     
     return response_success(
         data = [jsonable_encoder(comment) for comment in list_comments]

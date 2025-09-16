@@ -11,7 +11,7 @@ class CommentService:
         self.db = db
         
     def create_comment(self, comment_data:CommentCreate, article_id_data:int, user_id:int) -> CommentRead:
-        print(f'Article id que chegou aqui: {article_id_data}')
+
         comment = Comment(
             comment = comment_data.comment,
             author_id = user_id,

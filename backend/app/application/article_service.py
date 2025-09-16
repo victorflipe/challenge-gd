@@ -19,17 +19,6 @@ class ArticleService:
 
         """Cria um novo artigo"""
 
-        # list_tags_saved = []
-        # print('======================================================')
-        # print('Listar prelim????????', article_data.tags)
-        # for tag_name in article_data.tags:
-        #     print('Antes...')
-        #     tag = TagRead.from_orm(self.create_tag(tag_name))
-        #     print('Tag agora...     ', tag)
-        #     list_tags_saved.append(tag)    
-        
-        # print("Lista de tags: ", list_tags_saved)
-            
         article = Article(
             title = article_data.title,
             content = article_data.content,
@@ -47,7 +36,6 @@ class ArticleService:
     def create_tag(self, tag_name:str) -> Tag:
         tag_service = TagService(self.db)
         tag_obj = tag_service.create_tag(tag_name)
-        print(f'Obj tag: {tag_obj}')
         return tag_obj
     
     def update_tags(self, article_id: int, new_tags:list[Tag], tags_saved=None) -> list[Tag]:
@@ -55,10 +43,6 @@ class ArticleService:
         
         tags = [str.lower(tag) for tag in new_tags]
         tags_saved_str = [tag.tag.lower() for tag in tags_saved]
-        
-        print('Tag====================================', tags)
-        print('Saved====================================', tags_saved_str)
-        print('New====================================', new_tags)
         
         tags_to_remove = []
         tags_to_add = []
@@ -81,7 +65,6 @@ class ArticleService:
         # tags_to_remove_id = [tag.id for tag in tags_to_remove]
         
         tags_updated = self.repository.update_tags_to_article(article_id, tags_to_remove, tags_to_add_treated)
-        print(f'Updated tags........{tags_updated}')
         return tags_updated
 
     
@@ -89,10 +72,8 @@ class ArticleService:
 
         """Atualiza o artigo"""
 
-        print(f'Id: {article_data}')
-        
         tags_saved = self.get_all_tags_to_article(article_id = article_data.id)
-        print(f'salvas:         {tags_saved}')
+
         tags_updated = self.update_tags(
             article_id = article_data.id,
             tags_saved = tags_saved,
@@ -108,16 +89,9 @@ class ArticleService:
             tags= tags_updated
         )
         
-        # print(f'Tags já cadastradas: {tagsSaved}')
-        # print(f'Tags passadas: {article_data.tags}')
         article_updated = self.repository.update(article=article_to_update)
         return article_updated
     
-        # tag_service = TagService(self.db)
-        # tag_service
-        
-        # article_update = self.repository.update(article_update)
-
     def get_article(self, id:int) -> ArticleRead:
         
         """Retorna o artigo com base no id"""

@@ -38,7 +38,6 @@ class TagRepository:
         
         try:
             tag_found = self.db.query(TagModel).filter(TagModel.tag.ilike(tag_name)).first()
-            print("Tag encontrada ou erro? ", tag_found)
             return tag_found
         
         except SQLAlchemyError as error:

@@ -17,7 +17,6 @@ class TagService:
         
         try:
             tag_obj = self.get_by_name(tag=tag_data)
-            print(f'Tag obj: {tag_obj}')
             
             if not tag_obj:
             

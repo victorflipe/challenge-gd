@@ -11,11 +11,10 @@ router = APIRouter(prefix="/login", tags=["login"])
 @router.post("/")
 def user_login(user_credentials: UserLogin, db:Session = Depends(open_session)):
     
-    print('User credentials: ', user_credentials)
     try:
         user_service = UserService(db)
         token = user_service.login(user_credentials)
-        print('Token: ', token)
+
         if token:
         
             return response_success(
@@ -32,8 +31,3 @@ def user_login(user_credentials: UserLogin, db:Session = Depends(open_session)):
             status_code = status.HTTP_401_UNAUTHORIZED  
         )
         
-    # return response_error(
-    #     status_code=401,
-    #     details = "E-mail ou senha inválidos"
-    # )
-    

@@ -13,7 +13,6 @@ class CommentRepository:
     
     def save(self, comment:Comment) -> Comment:
         try:
-            print(f'O que temos aqui: {comment}')
             comment_obj = CommentModel(
                 comment=comment.comment,
                 author_id=comment.author_id,
