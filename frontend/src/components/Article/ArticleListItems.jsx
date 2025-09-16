@@ -19,7 +19,7 @@ const ArticleListItems = ({ articles }) => {
                         <div className='flex mb-2 my-8'>
                             <img
                                 className="md:w-32 md:h-26 h-12 w-12 object-cover rounded-xl"
-                                src={article.image.includes('http') ? article.image : NoImage}
+                                src={article.image ? (article.image.includes('http') ? article.image : NoImage) : NoImage}
                                 alt=""
                             />
                             <div className='pl-5 flex-1 flex flex-col justify-between'>

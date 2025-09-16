@@ -66,7 +66,6 @@ export const UserStorage = ({ children }) => {
             const response = await fetch(url, options)
             // const response = await data.json()
             let { data } = await response.json()
-            console.log(data)
             
             if (!response.ok) {
                 const message = data.detail || "Credenciais inválidas. Tente novamente";
@@ -74,7 +73,6 @@ export const UserStorage = ({ children }) => {
                 throw new Error(message)
             }
 
-            console.log(data)
             window.localStorage.setItem('token', data.access_token)
 
             await getUser()

@@ -6,7 +6,6 @@ const types = {
         message: "Preencha um email válido"
     },
     password: {
-        // At least 8 characters, one letter, one number
         regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
         message: "A senha deve ter pelo menos 8 caracteres, incluindo letras e números"
     },
@@ -15,7 +14,6 @@ const types = {
         message: "Utilize apenas números"
     },
     string: {
-        // Não vazio, pelo menos um caractere que não seja espaço
         regex: /\S+/,
         message: "O campo não pode estar vazio"
     }
@@ -40,7 +38,6 @@ const useForm = (type) => {
     }
 
     const onChange = ({ target }) => {
-        console.log('Teve a troca? '.target)
         if (error) validate(target.value)
         setValue(target.value)
     }

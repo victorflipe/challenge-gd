@@ -2,15 +2,14 @@ import React from 'react'
 import useFetch from '../../hooks/useFetch'
 import { GET_TAGS } from '../../api'
 
-const TagsList = ({tagsArticle, tagsSelectedArticle=[], setTagsFiltered}) => {
-    // console.log('No começo: ', tagsSelectedArticle)
+const TagsList = ({ isActive, tagsArticle, tagsSelectedArticle = [], setTagsFiltered, update = false }) => {
     const { request } = useFetch()
     const [tags, setTags] = React.useState([])
     const [tagsSelected, setTagsSelected] = React.useState([...tagsSelectedArticle])
-    
+
     React.useEffect(() => {
 
-        if(tagsArticle){
+        if (tagsArticle) {
             setTags(tagsArticle)
             return
         }
@@ -24,44 +23,38 @@ const TagsList = ({tagsArticle, tagsSelectedArticle=[], setTagsFiltered}) => {
         fetchTags()
     }, [tagsArticle])
 
-    
+
 
     React.useEffect(() => {
-        console.log('Tags filtradas: ', tagsSelected)
         setTagsFiltered([...tagsSelected])
     }, [tagsSelected])
 
-    React.useEffect(()=>{
-        console.log('filtradas 1: ', tagsSelectedArticle)
+    React.useEffect(() => {
 
         setTagsFiltered([...tagsSelectedArticle])
-        console.log('filtradas: ', tagsSelected)
     }, [])
 
     const handleClick = (tag) => {
 
         const tagExists = tagsSelected.some((item) => item.id == tag.id)
 
-        if (tagExists){
+        if (tagExists) {
             const tagsFiltered = tagsSelected.filter((tag_item) => tag_item.id != tag.id)
             setTagsSelected(tagsFiltered)
             return
         }
 
         setTagsSelected([...tagsSelected, tag])
-        
-        // let filtered = []
-        // filtered = tagsSelected.filter((item) =>item !== tag.id)
-        // console.log('dsdsds',filtered)
-        // setTagsSelected(filtered)
     }
 
 
     return (
         <section className=''>
-            <div className='w-auto overflow-x-auto h-20 flex items-center'>
+            <div className={`w-auto flex items-center h-20 ${!update ? "overflow-x-auto" : "overflow-y-auto flex-wrap gap-2 h-40"}  `}>
                 {tags.map((tag, idx) => (
-                    <span key={idx} className={`tags ${tagsSelected.map(item => item.id).includes(tag.id) ? 'tag-ativa' : ''}`} onClick={() => handleClick(tag)}>{tag.tag}</span>
+                    <span key={idx} className={`tags whitespace-nowrap ${tagsSelected.map(item => item.id).includes(tag.id) ? 'tag-ativa' : ''}`} onClick={() => handleClick(tag)}>
+                        {tag.tag}
+                    </span>
                 ))}
 
             </div>

@@ -7,10 +7,6 @@ import ArticleForm from './ArticleForm'
 const ArticleNew = () => {
 
 
-  const handleSubmit = () => {
-    console.log('Submeteu no pai: ')
-  }
-
   return (
     <section>
       <ArticleForm onSubmit={handleSubmit}/>

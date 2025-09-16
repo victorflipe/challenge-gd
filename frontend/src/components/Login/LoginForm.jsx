@@ -19,28 +19,21 @@ const LoginForm = () => {
         try{
 
             if (email.validate() && password.validate()) {
-                console.log(email.value)
-                console.log(password.value)
                 await userLogin(email.value, password.value)
-                console.log(error)
+              
                 if(error){
                     setMessage(error)
                     setIsOpen(true)
                 }
             }
         }catch(error){
-            console.log(error)
             setMessage('Erro ao efetuar login')
             setIsOpen(true)
         }
 
     }
 
-    React.useEffect(() => {
-        // console.log(data)
-    }, [])
-
-
+    
     return (
         <section className='w-full lg:py-10'>
             <h1 className='text-4xl text-center font-semibold pb-5'>Bem vindo de volta</h1>

@@ -65,13 +65,13 @@ const ArticleRead = () => {
             <ArticleHeader>
                 <div className="flex items-center py-2">
                     <h1 className='text-3xl font-semibold pr-2'>{article.title}</h1>
-                    {!isMobile && <TagsList tagsArticle={article.tags} setTagsFiltered={setTagsFiltered} />}
+                    {!isMobile && <TagsList isActive={false} tagsArticle={article.tags} setTagsFiltered={setTagsFiltered} />}
                 </div>
             </ArticleHeader>
 
             <p className='text-[#758269]'>Publicado por {article.author.name} - {formatDate(article.created_at)}</p>
             
-            {isMobile && article.tags.length > 0 && <TagsList tagsArticle={article.tags} setTagsFiltered={setTagsFiltered} />}
+            {isMobile && article.tags.length > 0 && <TagsList isActive={false} tagsArticle={article.tags} setTagsFiltered={setTagsFiltered} />}
 
             <article className='mt-5'>
                 {article.content}
@@ -90,7 +90,7 @@ const ArticleRead = () => {
                             <div className='w-full  ml-5'>
                                 <div className='flex justify-between items-center w-full'>
                                     <div className='flex gap-2'>
-                                        <p className='font-bold'>author</p>
+                                        <p className='font-bold'>{comment.author.name}</p>
                                         <p>{diffDate(comment.created_at)}</p>
                                     </div>
                                     <span>

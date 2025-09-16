@@ -26,7 +26,7 @@ const ArticleForm = ({ article }) => {
     const textButton = !article ? "Criar artigo" : "Salvar artigo"
 
     const handleSubmit = async () => {
-
+        event.preventDefault()
         if(!title.validate() || !content.validate()){
             return
         }
@@ -43,7 +43,6 @@ const ArticleForm = ({ article }) => {
         if (article) {
             const { url, options } = UPDATE_ARTICLE(article.id, createObj)
             const { json } = await request(url, options)
-            console.log(json)
             setMessage(json.message)
             setIsOpen(true)
         } else {
@@ -87,7 +86,7 @@ const ArticleForm = ({ article }) => {
                 <Input label={"Imagem do artigo"} name="image" {...image} placeholder="URL da imagem" error={false}/>
 
                 <div className='mb-5'>
-                    <TagsList tagsSelectedArticle={article ? article.tags : []} setTagsFiltered={setTagsFiltered} />
+                    <TagsList update={true} tagsSelectedArticle={article ? article.tags : []} setTagsFiltered={setTagsFiltered} />
                 </div>
 
                 <TextArea label="Conteúdo *" name="conteúdo" placeholder="Escreva aqui seu artigo" {...content} />
