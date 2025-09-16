@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+.mainContainer{
+  @apply h-full w-full flex lg:flex-col justify-center items-center p-2
+}
+
+.container{
+    @apply flex flex-col justify-center items-center p-2
+}
+
+.tags{
+  @apply bg-[#EDF2E8] px-4 py-2 mr-2 font-semibold rounded-full hover:cursor-pointer
+}
+
+.tag-ativa{
+  @apply text-[#67A22D] font-bold rounded-full
+}
+
+.text-green{
+  @apply text-[#758269]
+}
+
+.button{
+  @apply bg-[#67A22D] text-white py-2 px-4 font-normal rounded-xl cursor-pointer
+}
+
+.button-danger{
+  @apply bg-red-500 text-white py-2 px-4 font-normal rounded-xl cursor-pointer
+}
+
+.button-cancel{
+  @apply bg-gray-400 text-white py-2 px-4 font-normal rounded-xl cursor-pointer
+}
+
+.icons{
+  @apply cursor-pointer hover:fill-[#67A22D]
+}
