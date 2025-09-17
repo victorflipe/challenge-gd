@@ -1,12 +1,79 @@
-# React + Vite
+# Concepção do Projeto
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Após a criação do backend minimamente funcional, partimos para a criação do frontend.
 
-Currently, two official plugins are available:
+## Decisões Técnicas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Vite + React**: Proporciona uma ambiente de desenvolvimento rápido com builds otimizados utilizando pouca configuração
+- **Tailwind CSS**: Acelerar e facilitar a estilização dos itens
+- **CSS Modules**: Facilita a manutenção e garante estilos únicos para cada componente
+- **Context API**: Gerenciar o estado global de modo mais simples
+- **Arquitetura Modular**: A aplicação foi dividida em pastas como assets, components, hooks, styles e uitls
 
-## Expanding the ESLint configuration
+## Organização do Código
+```bash
+src/
+├─ assets/ # Imagens e ícones
+├─ components/ # Componentes reutilizáveis 
+├─ hooks/ # Custom Hooks
+├─ styles/ # Estilos globais
+├─ utils/ # Funções utilitárias
+├─ api.js # Integração com APIs
+├─ App.jsx # Raiz da aplicação
+├─ main.jsx 
+└─ UserContext.jsx #Gerenciamento de estado global
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Passos para construção
+
+### Passo 1. Estruturação mínima e teste de funcionamento
+
+Foi criado o seguinte:
+ - hooks: Funções customizadas
+ - api.js: Centraliza e formata o modelo das requisições
+ - utils: Formatação das datas
+ - Criação dos componentes **Header** e **Home** para configurar os estilos como cores, fontes e alinhamento
+
+Na pasta components, foi criado uma pasta por Entidade da aplicação.
+
+### Passo 2. Tela para Cadastro de Artigo:
+
+- Criação dos Componentes:
+    - Input e TextArea
+    - Criação de CustomHooks
+
+- Criação de Form para ser usado tanto na Edição quanto na Criação de Artigo (componentes ArticleEdit e ArticleNew)
+
+- Criação do ArticleHeader para ser chamado nos componentes do Article
+
+### Passo 3. Listagem de Artigos
+
+- Criação dos Componentes:
+ - ArticlList: Listando todos os artigos
+ - ArticleRead: Para leitura do artigo
+ - Estruturação do componente ListTags
+
+### Passo 4. Comentários
+
+- Criação do componente de Comentário e inclusão no ArticleRead
+- Ajuste nas consultas à API
+
+
+### Passo 5. Filtros 
+- Ajuste das funções para filtro ao inserir o Title do Artigo e ao selecionar Tags
+- Inclusão de Paginação
+
+### Passo 6. Modal 
+- Inclusão do Modal para exibir mensagem de sucesso ou erro
+
+### Passo 7. Proteção de rotas e Login
+
+Nesse passo, foi feito a validação do login, armazenando o token e implementando proteção nas rotas.
+
+### Passo 8. Ajustes para mobile
+
+Realização de ajustes nas classes, alterando tamanho de fontes, renderização de itens, etc
+
+### Passo 9. Criação do Container
+
+Como último passo, foi criado o container do frotend para ser executado diretamente no Docker, assim como o backend e banco de dados.
